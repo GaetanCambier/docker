@@ -148,5 +148,9 @@ crossarch_common_deploy () {
       docker push "gaetancambier/${build_name}:${arch}-${build_version}"
       docker push "gaetancambier/${build_name}:${arch}-latest"
     fi
+    if [ "${arch}" = "amd64" ]; then
+        docker tag "build:${arch}" "gaetancambier/${build_name}:latest"
+	docker push "gaetancambier/${build_name}:latest"
+    fi
   done
 }
