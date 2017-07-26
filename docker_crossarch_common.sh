@@ -56,6 +56,7 @@ __crossarch_common_parse_semver () {
 
 crossarch_common_build () {
   local dockerfile="${1}"
+  local entrypoint="${2}"
   
   __crossarch_welcome
   
@@ -69,6 +70,7 @@ crossarch_common_build () {
     tmp_dir=$(mktemp -d -p /tmp crossarch.XXXXXX)
 
     cp "${dockerfile}" "${tmp_dir}/Dockerfile"
+    cp "${entrypoint}" "${tmp_dir}/entrypoint.sh"
     
     local image_to_use
     image_to_use="crossarch/alpine:${arch}-${__crossarch_alpine_branch}"
@@ -132,19 +134,19 @@ crossarch_common_deploy () {
   docker login -u "${docker_username}" -p "${docker_password}"
   for arch in "${__crossarch_archs[@]}"; do
     if [ "${__crossarch_build_is_semver}" = "true" ]; then
-      docker tag "build:${arch}" "crossarch/${build_name}:${arch}-${build_version_major}"
-      docker tag "build:${arch}" "crossarch/${build_name}:${arch}-${build_version_major}.${build_version_minor}"
-      docker tag "build:${arch}" "crossarch/${build_name}:${arch}-${build_version_major}.${build_version_minor}.${build_version_patch}"
-      docker tag "build:${arch}" "crossarch/${build_name}:${arch}-latest"
-      docker push "crossarch/${build_name}:${arch}-${build_version_major}"
-      docker push "crossarch/${build_name}:${arch}-${build_version_major}.${build_version_minor}"
-      docker push "crossarch/${build_name}:${arch}-${build_version_major}.${build_version_minor}.${build_version_patch}"
-      docker push "crossarch/${build_name}:${arch}-latest"
+      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-${build_version_major}"
+      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-${build_version_major}.${build_version_minor}"
+      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-${build_version_major}.${build_version_minor}.${build_version_patch}"
+      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-latest"
+      docker push "gaetancambier/${build_name}:${arch}-${build_version_major}"
+      docker push "gaetancambier/${build_name}:${arch}-${build_version_major}.${build_version_minor}"
+      docker push "gaetancambier/${build_name}:${arch}-${build_version_major}.${build_version_minor}.${build_version_patch}"
+      docker push "gaetancambier/${build_name}:${arch}-latest"
     else
-      docker tag "build:${arch}" "crossarch/${build_name}:${arch}-${build_version}"
-      docker tag "build:${arch}" "crossarch/${build_name}:${arch}-latest"
-      docker push "crossarch/${build_name}:${arch}-${build_version}"
-      docker push "crossarch/${build_name}:${arch}-latest"
+      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-${build_version}"
+      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-latest"
+      docker push "gaetancambier/${build_name}:${arch}-${build_version}"
+      docker push "gaetancambier/${build_name}:${arch}-latest"
     fi
   done
 }
