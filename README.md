@@ -40,5 +40,5 @@ Of course, we appreciate contributions.
   
 ### Notes for Dockerfile
 
-* A fresh (24h or less) Alpine edge image is used
+* A fresh (24h or less) Alpine latest image is used
 * The `CROSSARCH_ARCH` is set to the currently being built architecture
