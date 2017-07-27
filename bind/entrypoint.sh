@@ -17,10 +17,17 @@ create_bind_data_dir() {
 
   if [ ! -d ${BIND_DATA_DIR}/lib ]; then
     mkdir -p ${BIND_DATA_DIR}/lib
-    chown ${BIND_USER}:${BIND_USER} ${BIND_DATA_DIR}/lib
+    chown -R ${BIND_USER}:${BIND_USER} ${BIND_DATA_DIR}/lib
   fi
   rm -rf /var/lib/bind
   ln -sf ${BIND_DATA_DIR}/lib /var/lib/bind
+
+  if [ ! -d ${BIND_DATA_DIR}/log ]; then
+    mkdir -p ${BIND_DATA_DIR}/log
+    chown -R ${BIND_USER}:${BIND_USER} ${BIND_DATA_DIR}/log
+  fi
+  rm -rf /var/log
+  ln -sf ${BIND_DATA_DIR}/log /var/log
 }
 
 create_pid_dir() {
