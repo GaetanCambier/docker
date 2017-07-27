@@ -70,10 +70,12 @@ crossarch_common_build () {
     tmp_dir=$(mktemp -d -p /tmp crossarch.XXXXXX)
 
     cp "${dockerfile}" "${tmp_dir}/Dockerfile"
-    cp "${entrypoint}" "${tmp_dir}/entrypoint.sh"
-    
+    if [[ -f "${entrypoint}" ]]; then
+      cp "${entrypoint}" "${tmp_dir}/entrypoint.sh"
+    fi
+
     local image_to_use
-    image_to_use="crossarch/alpine:${arch}-${__crossarch_alpine_branch}"
+    image_to_use="gaetancambier/alpine:${arch}-${__crossarch_alpine_branch}"
     
     if [ "${__crossarch_use_multiarch_alpine}" = "true" ]; then
       image_to_use="multiarch/alpine"
@@ -85,7 +87,7 @@ crossarch_common_build () {
         multiarch_alpine_arch="armhf"
       fi
       
-      image_to_use="${image_to_use}:${multiarch_alpine_arch}-${__crossarch_alpine_branch}"
+      image_to_use="${image_to_use}:${multiarch_alpine_arch}-${__crossarch_alpine_branch}-stable"
     fi
       
     local prepend

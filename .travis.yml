@@ -11,6 +11,7 @@ addons:
 env:
   matrix:
     - CROSSARCH_COMMON=1
+    - BUILD=alpine CROSSARCH_USE_MULTIARCH_ALPINE=true CROSSARCH_BUILD_IS_SEMVER=false CROSSARCH_BUILD_SQUASH=false
     - BUILD=bind
 install:
   - set -eo pipefail
@@ -21,7 +22,11 @@ script:
   - |
     if [[ -z "${CROSSARCH_COMMON+x}" ]]; then
       source ./docker_crossarch_common.sh
-      crossarch_common_build "./${BUILD}/Dockerfile" "./${BUILD}/entrypoint.sh"
+      if [[ -f "./${BUILD}/entrypoint.sh" ]]; then
+        crossarch_common_build "./${BUILD}/Dockerfile" "./${BUILD}/entrypoint.sh"
+      else
+        crossarch_common_build "./${BUILD}/Dockerfile"
+      fi
       source "./${BUILD}/get_version.sh"
       local build_version
       build_version=$(crossarch_build_get_version)
