@@ -4,7 +4,7 @@ set -e
 BIND_DATA_DIR=${DATA_DIR}/bind
 
 create_bind_data_dir() {
-  mkdir -p ${BIND_DATA_DIR}
+  mkdir -m 0775 -p ${BIND_DATA_DIR}
 
   # populate default bind configuration if it does not exist
   if [ ! -d ${BIND_DATA_DIR}/etc ]; then
@@ -12,32 +12,31 @@ create_bind_data_dir() {
   fi
   rm -rf /etc/bind
   ln -sf ${BIND_DATA_DIR}/etc /etc/bind
-  chmod -R 0775 ${BIND_DATA_DIR}
-  chown -R ${BIND_USER}:${BIND_USER} ${BIND_DATA_DIR}
 
   if [ ! -d ${BIND_DATA_DIR}/lib ]; then
-    mkdir -p ${BIND_DATA_DIR}/lib
-    chown -R ${BIND_USER}:${BIND_USER} ${BIND_DATA_DIR}/lib
+    mkdir -m 0775 -p ${BIND_DATA_DIR}/lib
   fi
   rm -rf /var/lib/bind
   ln -sf ${BIND_DATA_DIR}/lib /var/lib/bind
 
-  if [ ! -d ${BIND_DATA_DIR}/log ]; then
-    mkdir -p ${BIND_DATA_DIR}/log
-    chown -R ${BIND_USER}:${BIND_USER} ${BIND_DATA_DIR}/log
-  fi
-  rm -rf /var/log
-  ln -sf ${BIND_DATA_DIR}/log /var/log
+#  if [ ! -d ${BIND_DATA_DIR}/log ]; then
+#    mkdir -m 0775 -p ${BIND_DATA_DIR}/log
+#  fi
+#  rm -rf /var/log
+#  ln -sf ${BIND_DATA_DIR}/log /var/log
+
+  chmod -R 0775 ${BIND_DATA_DIR}
+  chown -R root:${BIND_USER} ${BIND_DATA_DIR}
 }
 
 create_pid_dir() {
   mkdir -m 0775 -p /var/run/named
-  chown root:${BIND_USER} /var/run/named
+  chown -R root:${BIND_USER} /var/run/named
 }
 
 create_bind_cache_dir() {
   mkdir -m 0775 -p /var/cache/bind
-  chown root:${BIND_USER} /var/cache/bind
+  chown -R root:${BIND_USER} /var/cache/bind
 }
 
 create_pid_dir
