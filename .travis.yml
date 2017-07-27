@@ -12,6 +12,7 @@ env:
   matrix:
     - CROSSARCH_COMMON=1
     - BUILD=bind
+    - BUILD=pihole
 install:
   - set -eo pipefail
   - chmod +x ./docker_crossarch_common.sh
