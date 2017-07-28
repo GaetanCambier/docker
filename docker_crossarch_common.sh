@@ -2,7 +2,7 @@
 
 __crossarch_common_version="1.1.0"
 
-__crossarch_archs=(${CROSSARCH_ARCHS:="amd64 armhf"})
+__crossarch_archs=(${CROSSARCH_ARCHS:="amd64 armhf aarch64"})
 __crossarch_alpine_branch=${CROSSARCH_ALPINE_BRANCH:="latest"}
 __crossarch_use_multiarch_alpine=${CROSSARCH_USE_MULTIARCH_ALPINE:="true"}
 
