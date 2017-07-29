@@ -99,7 +99,7 @@ EOF
 )
     echo -e "${prepend}\n$(cat "${tmp_dir}/Dockerfile")" > "${tmp_dir}/Dockerfile"
     local build_flags
-    build_flags=(--no-cache)
+    build_flags=( )
     
     if [ "${__crossarch_build_squash}" = "true" ]; then
       build_flags+=(--squash)
