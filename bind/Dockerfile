@@ -5,7 +5,7 @@ EXPOSE  53/tcp 53/udp
 ENV     BIND_USER=named \
 	DATA_DIR=/data
 
-RUN	apk add bind
+RUN	apk add --no-cache bind
 
 COPY	entrypoint.sh /
 
