@@ -94,7 +94,6 @@ crossarch_common_build () {
     prepend=$(cat <<EOF
 FROM ${image_to_use}
 ENV CROSSARCH_ARCH=${arch}
-RUN echo "Building image for \${CROSSARCH_ARCH}"
 EOF
 )
     echo -e "${prepend}\n$(cat "${tmp_dir}/Dockerfile")" > "${tmp_dir}/Dockerfile"
