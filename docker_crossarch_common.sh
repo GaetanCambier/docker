@@ -54,10 +54,19 @@ __crossarch_common_parse_semver () {
   eval "${5}"="$(echo "${1}" | sed -e "s#${re}#\4#")"
 }
 
+crossarch_common_cache () {
+  local build_name="${1}"
+
+  for arch in "${__crossarch_archs[@]}"; do
+    docker pull  "gaetancambier/${build_name}:${arch}-latest"
+  done
+}
+
 crossarch_common_build () {
-  local dockerfile="${1}"
-  local entrypoint="${2}"
-  
+  local build_name="${1}"
+  local dockerfile="${2}"
+  local entrypoint="${3}"
+
   __crossarch_welcome
   
   __info "Building Crossarch images for ${__crossarch_archs[*]} (on top of Alpine ${__crossarch_alpine_branch})"
@@ -105,7 +114,7 @@ EOF
     fi
     
     __info "Building ${arch} image..."
-    docker build "${build_flags[@]}" -t "build:${arch}" "${tmp_dir}"
+    docker build "${build_flags[@]}" --cache-from "gaetancambier/${build_name}:${arch}-latest" -t "build:${arch}" "${tmp_dir}"
     rm -rf "${tmp_dir}"
   done
 }
