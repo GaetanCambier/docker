@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 BIND_DATA_DIR=${DATA_DIR}/bind
