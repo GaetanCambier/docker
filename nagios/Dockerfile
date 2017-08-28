@@ -6,6 +6,7 @@ RUN	apt-get update && apt-get install -y				\
 	libio-socket-ssl-perl \
 	libnet-ssleay-perl \
 	perl \
-	ca-certificates \
+	'perl(Net::SSLeay)' \
+	'perl(IO::Socket::SSL)' \
 &&	apt-get clean
 
