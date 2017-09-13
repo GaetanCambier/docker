@@ -96,7 +96,7 @@ crossarch_common_build () {
         multiarch_alpine_arch="armhf"
       fi
       
-      image_to_use="${image_to_use}:${multiarch_alpine_arch}-${__crossarch_alpine_branch}-stable"
+      image_to_use="${image_to_use}:${multiarch_alpine_arch}-${__crossarch_alpine_branch}"
     fi
       
     local prepend
