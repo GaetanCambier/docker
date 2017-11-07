@@ -57,9 +57,7 @@ __crossarch_common_parse_semver () {
 crossarch_common_cache () {
   local build_name="${1}"
 
-  for arch in "${__crossarch_archs[@]}"; do
-    docker pull  "gaetancambier/${build_name}:${arch}-latest"
-  done
+  docker pull --all-tags  "gaetancambier/${build_name}"
 }
 
 crossarch_common_build () {
