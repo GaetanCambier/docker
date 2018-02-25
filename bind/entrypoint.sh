@@ -51,6 +51,9 @@ elif [[ ${1} == "named" || ${1} == $(which named) ]]; then
   EXTRA_ARGS="${@:2}"
   set --
 fi
+# Test Conf File
+echo "Check Config File..."
+exec named-checkconf -z /etc/bind/named.conf
 
 # default behaviour is to launch named
 if [[ -z ${1} ]]; then
