@@ -52,11 +52,11 @@ elif [[ ${1} == "named" || ${1} == $(which named) ]]; then
   set --
 fi
 # Test Conf File
-echo "Check Config File..."
-exec named-checkconf -z /etc/bind/named.conf
 
 # default behaviour is to launch named
 if [[ -z ${1} ]]; then
+  echo "Check Config File..."
+  exec named-checkconf -z /etc/bind/named.conf
   echo "Starting named..."
   exec $(which named) -u ${BIND_USER} -f ${EXTRA_ARGS}
 else
