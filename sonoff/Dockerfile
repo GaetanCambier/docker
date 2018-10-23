@@ -16,6 +16,8 @@ WORKDIR simple-sonoff-server
 ADD ./ ./
 
 RUN npm install 
+RUN npm install express
+RUN npm install nodejs-websocket
 
 EXPOSE 8080/tcp 8443/tcp 9443/tcp
 
