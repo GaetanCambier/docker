@@ -15,4 +15,3 @@ ADD	./ ./
 
 EXPOSE	8080/tcp 8443/tcp 9443/tcp
 
-ENTRYPOINT [ "nodejs", "sonoff.server.js" ]
