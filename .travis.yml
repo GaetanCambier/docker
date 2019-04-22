@@ -23,7 +23,7 @@ env:
   matrix:
     - CROSSARCH_COMMON=1
     - BUILD=bind
-    - BUILD=sonoff
+
 
 install:
   - set -eo pipefail
