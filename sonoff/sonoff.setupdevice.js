@@ -119,6 +119,7 @@ if (!parameterMissing) {
         // - connect to SONOFF
         // - setup SONOFF to use local PC as cloud
         // -----------------------------------------------------------------
+
         var find = setInterval(() => {
             WiFiControl.scanForWiFi(function (err, response) {
                 if (err) console.log(err);
@@ -138,6 +139,6 @@ if (!parameterMissing) {
                     });
                 }
             });
-        }, 500);
+        }, 5000);
     });
 }
