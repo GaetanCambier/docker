@@ -3,7 +3,7 @@
 __crossarch_common_version="1.1.0"
 
 __crossarch_archs=(${CROSSARCH_ARCHS:="amd64 armhf aarch64"})
-__crossarch_alpine_branch=${CROSSARCH_ALPINE_BRANCH:="latest"}
+__crossarch_alpine_branch=${CROSSARCH_ALPINE_BRANCH:="v3.10"}
 __crossarch_use_multiarch_alpine=${CROSSARCH_USE_MULTIARCH_ALPINE:="true"}
 
 __crossarch_build_is_semver=${CROSSARCH_BUILD_IS_SEMVER:="true"}
@@ -66,54 +66,57 @@ crossarch_common_build () {
   local entrypoint="${3}"
 
   __crossarch_welcome
-  
-  __info "Building Crossarch images for ${__crossarch_archs[*]} (on top of Alpine ${__crossarch_alpine_branch})"
-  
-  __info "Registering QEMU..."
-  docker run --rm --privileged multiarch/qemu-user-static:register --reset
-  
-  for arch in "${__crossarch_archs[@]}"; do
-    local tmp_dir
-    tmp_dir=$(mktemp -d -p /tmp crossarch.XXXXXX)
 
-    cp "${dockerfile}" "${tmp_dir}/Dockerfile"
-    if [[ -f "${entrypoint}" ]]; then
-      cp "${entrypoint}" "${tmp_dir}/entrypoint.sh"
-    fi
+  for branch in "${__crossarch_alpine_branch[@]}"; do
+  
+    __info "Building Crossarch images for ${__crossarch_archs[*]} (on top of Alpine ${branch})"
+  
+    __info "Registering QEMU..."
+    docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  
+    for arch in "${__crossarch_archs[@]}"; do
+      local tmp_dir
+      tmp_dir=$(mktemp -d -p /tmp crossarch.XXXXXX)
 
-    local image_to_use
-    image_to_use="gaetancambier/alpine:${arch}-${__crossarch_alpine_branch}"
+      cp "${dockerfile}" "${tmp_dir}/Dockerfile"
+      if [[ -f "${entrypoint}" ]]; then
+        cp "${entrypoint}" "${tmp_dir}/entrypoint.sh"
+      fi
+
+      local image_to_use
+      image_to_use="gaetancambier/alpine:${arch}-${branch}"
     
-    if [ "${__crossarch_use_multiarch_alpine}" = "true" ]; then
-      image_to_use="multiarch/alpine"
+      if [ "${__crossarch_use_multiarch_alpine}" = "true" ]; then
+        image_to_use="multiarch/alpine"
 
-      local multiarch_alpine_arch
-      if [ "${arch}" = "amd64" ]; then
-        multiarch_alpine_arch="x86_64"
-      elif [ "${arch}" = "armhf" ]; then
-        multiarch_alpine_arch="armhf"
+        local multiarch_alpine_arch
+        if [ "${arch}" = "amd64" ]; then
+          multiarch_alpine_arch="x86_64"
+        elif [ "${arch}" = "armhf" ]; then
+          multiarch_alpine_arch="armhf"
+        fi
+      
+        image_to_use="${image_to_use}:${multiarch_alpine_arch}-${branch}"
       fi
       
-      image_to_use="${image_to_use}:${multiarch_alpine_arch}-${__crossarch_alpine_branch}"
-    fi
-      
-    local prepend
-    prepend=$(cat <<EOF
+      local prepend
+      prepend=$(cat <<EOF
 FROM ${image_to_use}
 ENV CROSSARCH_ARCH=${arch}
 EOF
 )
-    echo -e "${prepend}\n$(cat "${tmp_dir}/Dockerfile")" > "${tmp_dir}/Dockerfile"
-    local build_flags
-    build_flags=( )
+      echo -e "${prepend}\n$(cat "${tmp_dir}/Dockerfile")" > "${tmp_dir}/Dockerfile"
+      local build_flags
+      build_flags=( )
     
-    if [ "${__crossarch_build_squash}" = "true" ]; then
-      build_flags+=(--squash)
-    fi
+      if [ "${__crossarch_build_squash}" = "true" ]; then
+        build_flags+=(--squash)
+      fi
     
-    __info "Building ${arch} image..."
-    docker build "${build_flags[@]}" --cache-from "gaetancambier/${build_name}:${arch}-latest" -t "build:${arch}" "${tmp_dir}"
-    rm -rf "${tmp_dir}"
+      __info "Building ${arch} image..."
+      docker build "${build_flags[@]}" --cache-from "gaetancambier/${build_name}:${arch}-latest" -t "build:${arch}" "${tmp_dir}"
+      rm -rf "${tmp_dir}"
+    done
   done
 }
 
