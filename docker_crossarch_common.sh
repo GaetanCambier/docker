@@ -113,10 +113,10 @@ EOF
         build_flags+=(--squash)
       fi
     
-    done
     __info "Building ${arch} image..."
     docker build "${build_flags[@]}" --cache-from "gaetancambier/${build_name}:${arch}-latest" -t "build:${arch}" "${tmp_dir}"
     rm -rf "${tmp_dir}"
+    done
   done
 }
 
