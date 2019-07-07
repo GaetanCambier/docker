@@ -142,7 +142,7 @@ crossarch_common_deploy () {
 
   
   __info "Pushing images to Docker Hub..."
-  docker login -u "${docker_username}" -p "${docker_password}"
+  docker login -u "${docker_username}" --password-stdin "${docker_password}"
   for arch in "${__crossarch_archs[@]}"; do
     if [ "${__crossarch_build_is_semver}" = "true" ]; then
       docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-${build_version_major}"
