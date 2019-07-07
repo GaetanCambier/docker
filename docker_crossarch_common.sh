@@ -68,7 +68,7 @@ crossarch_common_build () {
   __crossarch_welcome
 
   
-  __info "Building Crossarch images for ${__crossarch_archs[*]} (on top of Alpine ${__crossarch_alpine_branch[@]})"
+  __info "Building Crossarch images for ${__crossarch_archs[*]} (on top of Alpine ${__crossarch_alpine_branch[*]})"
   
   __info "Registering QEMU..."
   docker run --rm --privileged multiarch/qemu-user-static:register --reset
