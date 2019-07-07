@@ -3,7 +3,7 @@
 __crossarch_common_version="1.1.0"
 
 __crossarch_archs=(${CROSSARCH_ARCHS:="amd64 armhf aarch64"})
-__crossarch_alpine_branch=${CROSSARCH_ALPINE_BRANCH:="v3.10 v3.9 v3.7"}
+__crossarch_alpine_branch=(${CROSSARCH_ALPINE_BRANCH:="v3.10 v3.9 v3.7"})
 __crossarch_use_multiarch_alpine=${CROSSARCH_USE_MULTIARCH_ALPINE:="true"}
 
 __crossarch_build_is_semver=${CROSSARCH_BUILD_IS_SEMVER:="true"}
