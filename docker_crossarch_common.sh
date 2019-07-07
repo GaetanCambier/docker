@@ -67,14 +67,14 @@ crossarch_common_build () {
 
   __crossarch_welcome
 
-  for branch in "${__crossarch_alpine_branch[@]}"; do
   
-    __info "Building Crossarch images for ${__crossarch_archs[*]} (on top of Alpine ${branch})"
+  __info "Building Crossarch images for ${__crossarch_archs[*]} (on top of Alpine ${__crossarch_alpine_branch[@]})"
   
-    __info "Registering QEMU..."
-    docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  __info "Registering QEMU..."
+  docker run --rm --privileged multiarch/qemu-user-static:register --reset
   
-    for arch in "${__crossarch_archs[@]}"; do
+  for arch in "${__crossarch_archs[@]}"; do
+    for branch in "${__crossarch_alpine_branch[@]}"; do
       local tmp_dir
       tmp_dir=$(mktemp -d -p /tmp crossarch.XXXXXX)
 
@@ -113,10 +113,10 @@ EOF
         build_flags+=(--squash)
       fi
     
-      __info "Building ${arch} image..."
-      docker build "${build_flags[@]}" --cache-from "gaetancambier/${build_name}:${arch}-latest" -t "build:${arch}" "${tmp_dir}"
-      rm -rf "${tmp_dir}"
     done
+    __info "Building ${arch} image..."
+    docker build "${build_flags[@]}" --cache-from "gaetancambier/${build_name}:${arch}-latest" -t "build:${arch}" "${tmp_dir}"
+    rm -rf "${tmp_dir}"
   done
 }
 
