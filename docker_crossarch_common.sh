@@ -104,7 +104,8 @@ FROM ${image_to_use}
 ENV CROSSARCH_ARCH=${arch}
 EOF
 )
-      echo -e "${prepend}\n$(cat "${tmp_dir}/Dockerfile")" > "${tmp_dir}/Dockerfile"
+      cp "${tmp_dir}/Dockerfile" "${tmp_dir}/Dockerfile.tmp"
+      echo -e "${prepend}\n$(cat "${tmp_dir}/Dockerfile.tmp")" > "${tmp_dir}/Dockerfile"
       local build_flags
       build_flags=( )
     
