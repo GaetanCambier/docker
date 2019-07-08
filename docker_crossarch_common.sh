@@ -175,7 +175,8 @@ crossarch_common_entry () {
     crossarch_common_build "${build_name}" "./${build_name}/Dockerfile"
   fi
   source "./${build_name}/get_version.sh"
-  local build_version=$(crossarch_build_get_version)
+  local build_version
+  build_version=$(crossarch_build_get_version)
   crossarch_common_deploy "${docker_username}" "${docker_password}" "${build_name}" "${build_version}"
 }
 
