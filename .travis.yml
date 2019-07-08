@@ -35,16 +35,7 @@ script:
   - |
     if [[ -z "${CROSSARCH_COMMON+x}" ]]; then
       source ./docker_crossarch_common.sh
-      crossarch_common_cache "${BUILD}"
-      if [[ -f "./${BUILD}/entrypoint.sh" ]]; then
-        crossarch_common_build "${BUILD}" "./${BUILD}/Dockerfile" "./${BUILD}/entrypoint.sh"
-      else
-        crossarch_common_build "${BUILD}" "./${BUILD}/Dockerfile"
-      fi
-      source "./${BUILD}/get_version.sh"
-      local build_version 
-      build_version=$(crossarch_build_get_version)
-      crossarch_common_deploy "${DOCKER_USERNAME}" "${DOCKER_PASSWORD}" "${BUILD}" "${build_version}"
+      crossarch_common_entry "${BUILD}" "${DOCKER_USERNAME}" "${DOCKER_PASSWORD}"
     else
       shellcheck ./docker_crossarch_common.sh
     fi

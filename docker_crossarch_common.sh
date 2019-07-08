@@ -56,7 +56,6 @@ __crossarch_common_parse_semver () {
 
 crossarch_common_cache () {
   local build_name="${1}"
-
   docker pull --all-tags  "gaetancambier/${build_name}"
 }
 
@@ -161,3 +160,24 @@ crossarch_common_deploy () {
     fi
   done
 }
+
+
+
+crossarch_common_entry () {
+  local build_name="${1}"
+  local docker_username="${2}"
+  local docker_password="${3}"
+
+  crossarch_common_cache "${build_name}"
+  if [[ -f "./${build_name}/entrypoint.sh" ]]; then
+    crossarch_common_build "${build_name}" "./${build_name}/Dockerfile" "./${build_name}/entrypoint.sh"
+  else
+    crossarch_common_build "${build_name}" "./${build_name}/Dockerfile"
+  fi
+  source "./${build_name}/get_version.sh"
+  local build_version
+  build_version=$(crossarch_build_get_version)
+  crossarch_common_deploy "${docker_username}" "${docker_password}" "${build_name}" "${build_version}"
+}
+
+
