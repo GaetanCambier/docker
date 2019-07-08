@@ -168,7 +168,7 @@ crossarch_common_deploy_latest () {
   # shellcheck disable=SC2034
   local build_version_special=""
   
-  __info "Deploying ${build_name} (${build_version})..."
+  __info "Deploying ${build_name} (${build_version}) to Latest ..."
     
   if [ "${__crossarch_build_is_semver}" = "true" ]; then
     __crossarch_common_parse_semver "${build_version}" build_version_major build_version_minor build_version_patch build_version_special
@@ -179,24 +179,10 @@ crossarch_common_deploy_latest () {
   __info "Pushing images to Docker Hub..."
   docker login -u "${docker_username}" -p "${docker_password}"
   for arch in "${__crossarch_archs[@]}"; do
-    if [ "${__crossarch_build_is_semver}" = "true" ]; then
-      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-latest"
-      docker push "gaetancambier/${build_name}:${arch}-latest"
-    else
-      docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-latest"
-      docker push "gaetancambier/${build_name}:${arch}-latest"
-    fi
+    docker tag "build:${arch}" "gaetancambier/${build_name}:${arch}-latest"
+    docker push "gaetancambier/${build_name}:${arch}-latest"
   done
 }
-
-
-
-
-
-
-
-
-
 
 crossarch_common_entry () {
   local build_name="${1}"
@@ -210,6 +196,7 @@ crossarch_common_entry () {
     else
       crossarch_common_build "${build_name}" "./${build_name}/Dockerfile"
     fi
+    # shellcheck disable=SC1090
     source "./${build_name}/get_version.sh"
     local build_version
     build_version=$(crossarch_build_get_version)
