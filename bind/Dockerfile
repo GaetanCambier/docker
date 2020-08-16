@@ -5,8 +5,7 @@ EXPOSE  53/tcp 53/udp
 ENV     BIND_USER=named \
 	DATA_DIR=/data
 
-RUN	apk add --no-cache --upgrade bash tzdata
-RUN	apk add --no-cache --upgrade --no-scripts bind
+RUN	apk add --no-cache --upgrade bash tzdata bind
 
 COPY	entrypoint.sh /
 
