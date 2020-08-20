@@ -9,6 +9,6 @@ RUN	apk add --no-cache --upgrade bash tzdata bind
 
 COPY	entrypoint.sh /
 
-HEALTHCHECK CMD nslookup 127.0.0.1 127.0.0.1 || exit 1
+HEALTHCHECK CMD nslookup ::1 ::1 || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
